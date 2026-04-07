@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%; /* Slightly cooler light gray */
     --foreground: 0 0% 9%;
 
     --card: 0 0% 100%;
@@ -75,13 +75,13 @@
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 0 0% 0%; /* Pure black */
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 3.9%;
+    --card: 0 0% 5%; /* Slightly lighter than black to stand out */
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 3.9%;
+    --popover: 0 0% 5%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
@@ -145,6 +145,9 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-image: radial-gradient(hsl(var(--foreground) / 0.08) 1.25px, transparent 1.25px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -164,6 +167,14 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground/50;
+  }
+
+  /* Remove browser default autofill/clear icons on text inputs */
+  input::-webkit-contacts-auto-fill-button,
+  input::-webkit-credentials-auto-fill-button,
+  input::-ms-clear,
+  input::-ms-reveal {
+    display: none !important;
   }
 }
 
