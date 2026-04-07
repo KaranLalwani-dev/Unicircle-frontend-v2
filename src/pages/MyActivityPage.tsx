@@ -35,6 +35,11 @@ export default function MyActivityPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [confirmAction, setConfirmAction] = useState<{ type: string; id: number; label: string } | null>(null);
   const [activeTab, setActiveTab] = useState("created");
+  const [expandedDesc, setExpandedDesc] = useState<Record<number, boolean>>({});
+
+  const toggleDesc = (id: number) => {
+    setExpandedDesc(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   const { data: createdGroupsResponse, isLoading: isLoadingCreated } = useQuery({
     queryKey: ["myCreatedGroups"],
@@ -98,7 +103,7 @@ export default function MyActivityPage() {
   const joinedGroups = joinedGroupsResponse?.content || [];
   const myRequests = myRequestsResponse?.content || [];
   const incomingRequests = incomingRequestsResponse?.content || [];
-  
+
   // Requirement: "badge count on the 'Requests' tab should use totalElements from the paginated response"
   const pendingCount = incomingRequestsResponse?.totalElements || 0;
   const hasCreatedGroups = createdGroups.length > 0;
@@ -148,7 +153,7 @@ export default function MyActivityPage() {
         </TabsList>
 
         {/* Created */}
-        <TabsContent value="created" className="space-y-3">
+        <TabsContent value="created" className="space-y-5">
           {isLoadingCreated && <p className="py-8 text-center text-muted-foreground">Loading specific groups...</p>}
           {!isLoadingCreated && createdGroups.length === 0 ? (
             <div className="py-16 text-center">
@@ -159,14 +164,22 @@ export default function MyActivityPage() {
             createdGroups.map((g) => {
               // Usually the backend returns a `pendingRequestsCount` for each group, but since it's not explicitly in the API spec snippet for GroupSummaryResponse, we'll conditionally show requests count based on another query if requested. However, since the spec says 'hasPendingRequest' is attached, we can just point to the requests tab.
               return (
-                <div key={g.groupId} className="rounded-xl border bg-card p-4">
+                <div key={g.groupId} className="relative rounded-xl border bg-card p-4">
+                  <div className="absolute right-4 top-4">
+                    {statusBadge(g.status)}
+                  </div>
                   <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1">
-                      <div className="mb-1 flex items-center gap-2">
-                        <h3 className="font-semibold text-foreground">{g.title}</h3>
-                        {statusBadge(g.status)}
+                    <div className="flex-1 pr-32">
+                      <div className="mb-1">
+                        <h3 className="font-semibold text-foreground line-clamp-1">{g.title}</h3>
                       </div>
-                      <p className="mb-2 text-base leading-relaxed text-foreground/90 line-clamp-2">{g.description}</p>
+                      <p 
+                        className={`mb-2 text-base leading-relaxed transition-colors ${expandedDesc[g.groupId] ? "text-foreground" : "text-foreground/90 line-clamp-2"} ${g.description && g.description.length > 85 ? "cursor-pointer hover:text-muted-foreground" : ""}`}
+                        onClick={() => g.description && g.description.length > 85 && toggleDesc(g.groupId)}
+                        title={g.description && g.description.length > 85 ? (expandedDesc[g.groupId] ? "Click to collapse" : "Click to expand") : undefined}
+                      >
+                        {g.description}
+                      </p>
                       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{format(new Date(g.activityDateTime), "MMM dd, yyyy • h:mm a")}</span>
                         <span className="flex items-center gap-1"><Users className="h-3 w-3" />{g.currentMembers}/{g.maxMembers}</span>
@@ -175,7 +188,9 @@ export default function MyActivityPage() {
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <Button variant="outline" size="sm" onClick={() => setDetailGroup(g)}>View Details</Button>
-                    <Button variant="outline" size="sm" onClick={() => setActiveTab("requests")}>Manage Requests</Button>
+                    {g.status !== "CANCELLED" && (
+                      <Button variant="outline" size="sm" onClick={() => setActiveTab("requests")}>Manage Requests</Button>
+                    )}
                     {g.status === "OPEN" && (
                       <Button
                         variant="outline"

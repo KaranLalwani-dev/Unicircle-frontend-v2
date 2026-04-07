@@ -25,7 +25,7 @@ const formatYear = (val: string) => {
 export default function ProfilePage() {
   const { user, logout } = useAuth();
   const { toast } = useToast();
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user?.name || "");
   const [year, setYear] = useState(user?.year || "");
@@ -52,7 +52,7 @@ export default function ProfilePage() {
       toast({ title: "Profile updated", description: "Your changes have been saved. Refreshing..." });
       setTimeout(() => window.location.reload(), 1000);
     } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to update profile", variant: "destructive" });
+      toast({ description: e.message || "Failed to update profile" });
     } finally {
       setLoading(false);
     }
@@ -60,20 +60,25 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-6 pb-24 md:pb-6">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground">Profile</h1>
-        <Button variant="ghost" size="sm" onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? <X className="h-4 w-4" /> : <Edit2 className="h-4 w-4" />}
-        </Button>
       </div>
 
-      <Card>
-        <CardContent className="pt-6">
+      <Card className="relative">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-4 top-4 h-8 w-8 text-muted-foreground hover:text-foreground"
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? <X className="h-4 w-4" /> : <Edit2 className="h-4 w-4" />}
+        </Button>
+        <CardContent className="pt-8">
           <div className="flex flex-col items-center text-center">
             <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary">
               {initials}
             </div>
-            
+
             {!isEditing ? (
               <>
                 <h2 className="text-xl font-bold text-foreground">{user.name}</h2>
@@ -103,7 +108,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="mt-6 w-full space-y-2">
-                  <Button variant="destructive" className="w-full" onClick={logout}>
+                  <Button variant="outline" className="w-full bg-black text-white hover:bg-black/90 hover:text-white border-transparent" onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" /> Sign Out
                   </Button>
                 </div>

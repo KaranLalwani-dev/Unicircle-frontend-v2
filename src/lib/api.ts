@@ -24,7 +24,6 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
 
   if (response.status === 401) {
     window.dispatchEvent(new Event("auth-unauthorized"));
-    throw new Error("Unauthorized");
   }
 
   // Handle No Content

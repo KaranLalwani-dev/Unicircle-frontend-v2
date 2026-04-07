@@ -45,14 +45,29 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     
+    const trimmedEmail = email.trim();
+    if (trimmedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError("Please enter a valid email.");
+      return;
+    }
+
     if (isLogin) {
       if (!email.trim() || !password.trim()) {
         setError("Please enter both email and password.");
         return;
       }
     } else {
-      if (!email.trim() || !password.trim() || !name.trim() || !year || !branch) {
+      const trimmedName = name.trim();
+      if (!email.trim() || !password.trim() || !trimmedName || !year || !branch) {
         setError("Please fill out all required fields.");
+        return;
+      }
+      if (/^\d/.test(trimmedName)) {
+        setError("Name cannot start with a number.");
+        return;
+      }
+      if (!/[a-zA-Z]/.test(trimmedName)) {
+        setError("Name must contain at least one letter.");
         return;
       }
     }
@@ -79,7 +94,12 @@ export default function LoginPage() {
       } else if (err.status === 401) {
         setError("Invalid email or password.");
       } else {
-        toast({ title: "Error", description: "A network error occurred. Please try again.", variant: "destructive" });
+        if (isLogin) {
+          toast({ title: "Account not found", description: "Please create an account to join the community." });
+          setIsLogin(false);
+        } else {
+          toast({ title: "Error", description: "A network error occurred. Please try again." });
+        }
       }
     } finally {
       setLoading(false);
@@ -110,7 +130,7 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               {!isLogin && (
                 <>
                   <div className="space-y-2">

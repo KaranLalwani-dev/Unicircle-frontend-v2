@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { format } from "date-fns";
 import { Calendar, Users, User } from "lucide-react";
 import type { Group } from "@/types";
@@ -33,26 +34,31 @@ export default function GroupCard({ group, onViewDetails, onRequestJoin }: Props
   else if (hasPendingRequest) { actionLabel = "Request Pending"; actionDisabled = true; }
   else if (s !== "OPEN") { actionLabel = s === "FULL" ? "Group Full" : group.status.toLowerCase(); actionDisabled = true; }
 
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <div className="group flex flex-col rounded-xl border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
-      <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
-        <div className="flex flex-wrap gap-1.5">
-          {group.tags?.map((tag) => (
-            <Badge key={tag.tagId} variant="secondary" className="text-xs font-normal">
-              {tag.name}
-            </Badge>
-          ))}
-        </div>
-        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize ${statusColor}`}>
-          {group.status.toLowerCase()}
-        </span>
+    <div className="group relative flex flex-col rounded-xl border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+      <span className={`absolute right-5 top-5 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium capitalize ${statusColor}`}>
+        {group.status.toLowerCase()}
+      </span>
+
+      <div className="mb-3 flex flex-wrap gap-1.5 pr-20">
+        {group.tags?.map((tag) => (
+          <Badge key={tag.tagId} variant="secondary" className="text-xs font-normal">
+            {tag.name}
+          </Badge>
+        ))}
       </div>
 
       <h3 className="mb-2 text-lg font-semibold leading-tight text-foreground line-clamp-2">
         {group.title}
       </h3>
 
-      <p className="mb-4 flex-1 text-base leading-relaxed text-foreground/90 line-clamp-3">
+      <p 
+        className={`mb-4 flex-1 text-base leading-relaxed transition-colors ${expanded ? "text-foreground" : "text-foreground/90 line-clamp-3"} ${group.description && group.description.length > 120 ? "cursor-pointer hover:text-muted-foreground" : ""}`}
+        onClick={() => group.description && group.description.length > 120 && setExpanded(!expanded)}
+        title={group.description && group.description.length > 120 ? (expanded ? "Click to collapse" : "Click to expand") : undefined}
+      >
         {group.description}
       </p>
 

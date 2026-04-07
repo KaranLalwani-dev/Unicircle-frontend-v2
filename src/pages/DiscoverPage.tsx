@@ -69,7 +69,7 @@ export default function DiscoverPage() {
       queryClient.invalidateQueries({ queryKey: ["groups"] });
     },
     onError: (e: any) => {
-      toast({ title: "Cannot join", description: e.message || "Failed to join group", variant: "destructive" });
+      toast({ description: e.message || "Failed to join group" });
     }
   });
 
@@ -86,7 +86,7 @@ export default function DiscoverPage() {
   const hasFilters = selectedTagIds.length > 0 || year !== "All" || branch !== "All";
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 pb-24 md:pb-6">
+    <div className="mx-auto max-w-5xl px-4 py-6 pb-48 md:pb-32">
       {/* Search */}
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -167,7 +167,7 @@ export default function DiscoverPage() {
           <p className="text-sm text-muted-foreground">Try different filters or create a new group!</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {groups.map((g) => (
             <GroupCard
               key={g.groupId}
