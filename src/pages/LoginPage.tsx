@@ -117,7 +117,7 @@ export default function LoginPage() {
                     <Label htmlFor="name">Name *</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="pl-10" placeholder="John Doe" />
+                      <Input id="name" value={name} onChange={(e) => setName(e.target.value)} className="pl-10" />
                     </div>
                   </div>
                   <div className="flex gap-3">
@@ -140,14 +140,14 @@ export default function LoginPage() {
                     <Label htmlFor="phone">Phone Number (Optional)</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="pl-10" placeholder="9876543210" />
+                      <Input id="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} className="pl-10" />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="instagram">Instagram ID (Optional)</Label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">@</span>
-                      <Input id="instagram" value={instagramId} onChange={(e) => setInstagramId(e.target.value)} className="pl-10" placeholder="johndoe" />
+                      <Input id="instagram" value={instagramId} onChange={(e) => setInstagramId(e.target.value)} className="pl-10" />
                     </div>
                   </div>
                 </>
