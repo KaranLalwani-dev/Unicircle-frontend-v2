@@ -52,7 +52,7 @@ export default function GroupCard({ group, onViewDetails, onRequestJoin }: Props
         {group.title}
       </h3>
 
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+      <p className="mb-4 flex-1 text-base leading-relaxed text-foreground/90 line-clamp-3">
         {group.description}
       </p>
 

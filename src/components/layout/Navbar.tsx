@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop nav */}
-      <header className="sticky top-0 z-50 border-b bg-card/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-foreground/10 bg-background/30 backdrop-blur-xl backdrop-saturate-150">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
           <Link to="/discover" className="flex items-center gap-2 font-bold text-foreground">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
@@ -55,7 +55,7 @@ export default function Navbar() {
       </header>
 
       {/* Mobile bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/95 backdrop-blur-md md:hidden">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-foreground/10 bg-background/30 backdrop-blur-xl backdrop-saturate-150 md:hidden">
         <div className="flex items-center justify-around py-2">
           {navItems.map((item) => {
             const active = location.pathname.startsWith(item.to);

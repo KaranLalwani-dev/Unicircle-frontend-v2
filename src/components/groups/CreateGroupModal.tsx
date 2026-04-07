@@ -35,7 +35,7 @@ export default function CreateGroupModal({ open, onClose, onCreated }: Props) {
        onClose();
     },
     onError: (e: any) => {
-       toast({ title: "Error", description: e.message || "Failed to create group", variant: "destructive" });
+       toast({ description: e.message || "Failed to create group" });
     }
   });
 
@@ -112,7 +112,7 @@ export default function CreateGroupModal({ open, onClose, onCreated }: Props) {
             <Label>Tags *</Label>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag: any) => (
-                <label key={tag.tagId} className="flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors data-[selected=true]:bg-primary data-[selected=true]:text-primary-foreground" data-selected={selectedTags.includes(tag.tagId)}>
+                <label key={tag.tagId} className="flex cursor-pointer items-center gap-1.5 rounded-full border border-black/20 dark:border-white/20 px-3 py-1.5 text-sm transition-colors data-[selected=true]:bg-primary data-[selected=true]:border-primary data-[selected=true]:text-primary-foreground" data-selected={selectedTags.includes(tag.tagId)}>
                   <Checkbox checked={selectedTags.includes(tag.tagId)} onCheckedChange={() => toggleTag(tag.tagId)} className="hidden" disabled={createMutation.isPending} />
                   {tag.name}
                 </label>

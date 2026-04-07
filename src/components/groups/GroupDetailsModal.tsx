@@ -38,7 +38,13 @@ export default function GroupDetailsModal({ group: initialGroup, open, onClose, 
 
   const { isCreator, isMember, hasPendingRequest, creator, members = [] } = group as any;
   const s = group.status.toUpperCase();
-  const statusColor = s === "OPEN" ? "bg-success/10 text-success" : s === "FULL" ? "bg-info/10 text-info" : "bg-muted text-muted-foreground";
+  const colors: Record<string, string> = {
+    OPEN: "bg-success/10 text-success",
+    FULL: "bg-info/10 text-info",
+    COMPLETED: "bg-muted text-muted-foreground",
+    CANCELLED: "bg-destructive/10 text-destructive",
+  };
+  const statusColor = colors[s] || "bg-muted text-muted-foreground";
 
   let actionLabel = "Request to Join";
   let actionDisabled = false;
@@ -66,7 +72,7 @@ export default function GroupDetailsModal({ group: initialGroup, open, onClose, 
            <p className="py-8 text-center text-muted-foreground">Loading details...</p>
         ) : (
           <div className="space-y-4">
-            <p className="text-sm leading-relaxed text-muted-foreground">{group.description}</p>
+            <p className="text-base leading-relaxed text-foreground/90">{group.description}</p>
 
             <div className="flex flex-wrap gap-4 text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">

@@ -87,7 +87,7 @@ export default function MyActivityPage() {
       setConfirmAction(null);
     },
     onError: (err: any) => {
-      toast({ title: "Error", description: err.message || "Failed to perform action", variant: "destructive" });
+      toast({ description: err.message || "Failed to perform action" });
       setConfirmAction(null);
     }
   });
@@ -166,7 +166,7 @@ export default function MyActivityPage() {
                         <h3 className="font-semibold text-foreground">{g.title}</h3>
                         {statusBadge(g.status)}
                       </div>
-                      <p className="mb-2 text-sm text-muted-foreground line-clamp-2">{g.description}</p>
+                      <p className="mb-2 text-base leading-relaxed text-foreground/90 line-clamp-2">{g.description}</p>
                       <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{format(new Date(g.activityDateTime), "MMM dd, yyyy • h:mm a")}</span>
                         <span className="flex items-center gap-1"><Users className="h-3 w-3" />{g.currentMembers}/{g.maxMembers}</span>
@@ -210,7 +210,13 @@ export default function MyActivityPage() {
                     variant="outline"
                     size="sm"
                     className="mt-2 text-destructive hover:bg-destructive/10"
-                    onClick={() => setConfirmAction({ type: "leave", id: g.groupId, label: `Leave "${g.title}"?` })}
+                    onClick={() => {
+                      if (g.isCreator || g.creator?.userId === user?.userId) {
+                        toast({ description: "You cannot leave a group you created. To disband the group, please cancel it from created tab" });
+                      } else {
+                        setConfirmAction({ type: "leave", id: g.groupId, label: `Leave "${g.title}"?` });
+                      }
+                    }}
                     disabled={manageMutation.isPending}
                   >
                     Leave Group
@@ -305,7 +311,7 @@ export default function MyActivityPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirm} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction onClick={handleConfirm} className="bg-primary text-primary-foreground hover:bg-primary/90">
               Confirm
             </AlertDialogAction>
           </AlertDialogFooter>
