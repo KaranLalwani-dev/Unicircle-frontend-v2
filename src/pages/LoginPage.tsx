@@ -160,7 +160,6 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@mit.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"

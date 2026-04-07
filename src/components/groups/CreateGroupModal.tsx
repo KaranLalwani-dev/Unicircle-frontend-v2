@@ -42,7 +42,7 @@ export default function CreateGroupModal({ open, onClose, onCreated }: Props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [datetime, setDatetime] = useState("");
-  const [maxMembers, setMaxMembers] = useState(4);
+  const [maxMembers, setMaxMembers] = useState<number | "">(4);
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -58,7 +58,7 @@ export default function CreateGroupModal({ open, onClose, onCreated }: Props) {
     if (description.trim().length > 2000) e.description = "Description must be under 2000 characters.";
     if (!datetime) e.datetime = "Please select a date and time.";
     else if (new Date(datetime) <= new Date()) e.datetime = "Activity must be in the future.";
-    if (maxMembers < 2 || maxMembers > 20) e.maxMembers = "Members must be between 2 and 20.";
+    if (typeof maxMembers !== "number" || maxMembers < 2 || maxMembers > 20) e.maxMembers = "Members must be between 2 and 20.";
     if (selectedTags.length === 0 && tags.length > 0) e.tags = "Select at least one tag.";
     if (selectedTags.length > 5) e.tags = "You format at most 5 tags.";
     setErrors(e);
@@ -76,7 +76,7 @@ export default function CreateGroupModal({ open, onClose, onCreated }: Props) {
       title: title.trim(),
       description: description.trim(),
       activityDateTime: dt.toISOString(),
-      maxMembers: maxMembers,
+      maxMembers: Number(maxMembers),
       tagIds: selectedTags,
     });
   };
@@ -105,7 +105,7 @@ export default function CreateGroupModal({ open, onClose, onCreated }: Props) {
           </div>
           <div className="space-y-1.5">
             <Label>Max Members (2-20) *</Label>
-            <Input type="number" min={2} max={20} value={maxMembers} onChange={(e) => setMaxMembers(parseInt(e.target.value) || 2)} disabled={createMutation.isPending} />
+            <Input type="number" min={2} max={20} value={maxMembers} onChange={(e) => setMaxMembers(e.target.value ? parseInt(e.target.value) : "")} disabled={createMutation.isPending} />
             {errors.maxMembers && <p className="text-xs text-destructive">{errors.maxMembers}</p>}
           </div>
           <div className="space-y-1.5">
