@@ -86,7 +86,7 @@ export default function DiscoverPage() {
   const hasFilters = selectedTagIds.length > 0 || year !== "All" || branch !== "All";
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 pb-48 md:pb-32">
+    <div className="discover-page mx-auto max-w-5xl px-4 py-6 pb-48 md:pb-32">
       {/* Search */}
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -94,7 +94,7 @@ export default function DiscoverPage() {
           placeholder="Search groups (e.g., airport, DBMS, trek)..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10 pr-10"
+          className="pl-10 pr-10 bg-background/90 backdrop-blur-xl shadow-sm border-foreground/10"
         />
         <Button
           variant="ghost"
@@ -108,7 +108,7 @@ export default function DiscoverPage() {
 
       {/* Filters */}
       {showFilters && (
-        <div className="mb-4 space-y-3 rounded-xl border bg-card p-4">
+        <div className="mb-4 space-y-3 rounded-xl border border-foreground/10 bg-card/95 backdrop-blur-xl p-4 shadow-md animate-in fade-in slide-in-from-top-2 duration-300">
           <div>
             <p className="mb-2 text-sm font-medium text-foreground">Tags</p>
             <div className="flex flex-wrap gap-1.5">

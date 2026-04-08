@@ -92,7 +92,7 @@ export default function LoginPage() {
       if (err.status === 400) {
         setError(err.message || "Invalid input data.");
       } else if (err.status === 401) {
-        setError("Invalid email or password.");
+        setError("The login information you entered is incorrect.");
       } else {
         if (isLogin) {
           toast({ title: "Account not found", description: "Please create an account to join the community." });

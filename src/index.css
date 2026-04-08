@@ -145,8 +145,12 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-image: radial-gradient(hsl(var(--foreground) / 0.08) 1.25px, transparent 1.25px);
-    background-size: 24px 24px;
+    
+    background-image: 
+      radial-gradient(hsl(var(--foreground) / 0.14) 1.25px, transparent 1.25px),
+      radial-gradient(hsl(var(--foreground) / 0.14) 1.25px, transparent 1.25px);
+    background-size: 32px 32px;
+    background-position: 0 0, 16px 16px;
     background-attachment: fixed;
   }
 
@@ -181,5 +185,23 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Hide body scrollbar on mobile when Discover Page is active */
+  @media (max-width: 768px) {
+    body:has(.discover-page)::-webkit-scrollbar {
+      display: none !important;
+    }
+    body:has(.discover-page) {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
   }
 }
