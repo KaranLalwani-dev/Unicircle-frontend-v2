@@ -2,7 +2,7 @@ import type {
   User, Group, Tag, JoinRequest, PageResponse 
 } from "@/types";
 
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 // Helper to get token
 const getToken = () => localStorage.getItem("token");
