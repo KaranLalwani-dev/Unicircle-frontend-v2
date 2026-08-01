@@ -191,10 +191,10 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
                   />
-                  <p className="text-[11px] text-muted-foreground mt-1">
-                    Please use your college email ID ending with @learner.manipal.edu
-                  </p>
                 </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Please use your college email ID ending with @learner.manipal.edu
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password *</Label>

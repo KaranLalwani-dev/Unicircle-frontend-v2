@@ -2,10 +2,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/layout/Navbar";
 import LoginPage from "@/pages/LoginPage";
+import LandingPage from "@/pages/LandingPage";
 import DiscoverPage from "@/pages/DiscoverPage";
 import MyActivityPage from "@/pages/MyActivityPage";
 import ProfilePage from "@/pages/ProfilePage";
@@ -21,15 +22,18 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 function AppRoutes() {
   const { user } = useAuth();
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/" && !user;
+
   return (
     <>
-      <Navbar />
+      {!isLandingPage && <Navbar />}
       <Routes>
+        <Route path="/" element={user ? <Navigate to="/discover" replace /> : <LandingPage />} />
         <Route path="/login" element={user ? <Navigate to="/discover" replace /> : <LoginPage />} />
         <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
         <Route path="/my-activity" element={<ProtectedRoute><MyActivityPage /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-        <Route path="/" element={<Navigate to={user ? "/discover" : "/login"} replace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
@@ -51,3 +55,4 @@ const App = () => (
 );
 
 export default App;
+
