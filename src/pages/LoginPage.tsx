@@ -46,9 +46,15 @@ export default function LoginPage() {
     setError("");
     
     const trimmedEmail = email.trim();
-    if (trimmedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      setError("Please enter a valid email.");
-      return;
+    if (trimmedEmail) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+        setError("Please enter a valid email.");
+        return;
+      }
+      if (!/^[a-zA-Z0-9._%+-]+@learner\.manipal\.edu$/i.test(trimmedEmail)) {
+        setError("please login with your college email id");
+        return;
+      }
     }
 
     if (isLogin) {
@@ -180,10 +186,14 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
+                    placeholder="yourname@learner.manipal.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10"
                   />
+                  <p className="text-[11px] text-muted-foreground mt-1">
+                    Please use your college email ID ending with @learner.manipal.edu
+                  </p>
                 </div>
               </div>
               <div className="space-y-2">
