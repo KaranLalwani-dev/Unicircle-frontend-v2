@@ -12,6 +12,8 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import AudioPlayer from "../components/AudioPlayer";
+
 /* ─── Scroll-reveal ─── */
 function useReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,35 +44,6 @@ function Reveal({ children, className = "", delay = 0 }: { children: React.React
       }}
     >
       {children}
-    </div>
-  );
-}
-
-/* ─── Animated counter ─── */
-function Counter({ value, label }: { value: string; label: string }) {
-  const { ref, visible } = useReveal(0.25);
-  const num = parseInt(value.replace(/[^0-9]/g, ""), 10);
-  const suffix = value.replace(/[0-9]/g, "");
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!visible) return;
-    let cur = 0;
-    const step = Math.max(1, Math.floor(num / 50));
-    const iv = setInterval(() => {
-      cur += step;
-      if (cur >= num) { setCount(num); clearInterval(iv); }
-      else setCount(cur);
-    }, 20);
-    return () => clearInterval(iv);
-  }, [visible, num]);
-
-  return (
-    <div ref={ref} className="text-center">
-      <p className="text-4xl font-semibold tracking-tight text-neutral-900 sm:text-5xl">
-        {visible ? `${count}${suffix}` : value}
-      </p>
-      <p className="mt-1 text-sm text-neutral-500">{label}</p>
     </div>
   );
 }
@@ -175,6 +148,15 @@ const EXAMPLES = [
   },
 ];
 
+const NEW_IMAGE_CARDS = [
+  { img: "/road trip.png", title: "Road Trips", text: "Enjoy that long weekend road trip out of the city with friends." },
+  { img: "/hackathon.png", title: "Hackathons", text: "Conquer the next campus hackathon together and build cool stuff." },
+  { img: "/treak.png", title: "Weekend Treks", text: "Reach new heights and catch the sunrise before morning classes." },
+  { img: "/football.png", title: "Campus Sports", text: "Score big, train hard, and play with your college squad." },
+  { img: "/cafe.jpg", title: "Cafes", text: "Grab a coffee and hang out with friends after class." },
+  { img: "/picnic.jpg", title: "Campus Hangs", text: "Relax and unwind under the sun on the campus lawns." },
+];
+
 const STEPS = [
   { num: "1", icon: Shield, title: "Create your account", body: "Sign up with your @learner.manipal.edu email. Only verified MIT Bengaluru students can join." },
   { num: "2", icon: Tag, title: "Explore what's happening", body: "Search and filter groups by category, year, or branch. New groups are posted every day." },
@@ -196,6 +178,8 @@ export default function LandingPage() {
 
   return (
     <div className="landing-page min-h-screen bg-white text-neutral-900" style={{ backgroundImage: "none" }}>
+      <AudioPlayer />
+      
       {/* ─── Nav ─── */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-200/80 bg-white/80 backdrop-blur-lg">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
@@ -266,13 +250,22 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Stats ─── */}
-      <section className="border-y border-neutral-200 bg-neutral-50/50 px-6 py-14">
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 sm:grid-cols-4">
-          <Counter value="500+" label="Students" />
-          <Counter value="200+" label="Groups created" />
-          <Counter value="50+" label="Weekly events" />
-          <Counter value="9" label="Branches" />
+      {/* ─── About Unicircle (v1) ─── */}
+      <section className="bg-black text-white px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl grid gap-12 lg:grid-cols-2 lg:items-center">
+          <Reveal>
+            <div>
+              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6 tracking-tight">About Unicircle</h2>
+              <p className="text-lg text-neutral-400 leading-relaxed">
+                Unicircle is a platform by students, for students. We invite you to discover, connect, and build memories with people who share your interests. Whether it's shipping code, trekking hills, or just hanging out, find your crew here.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+              <video src="/v1.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" />
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -299,6 +292,25 @@ export default function LandingPage() {
                   </div>
                   <h3 className="mb-1.5 text-base font-semibold">{f.title}</h3>
                   <p className="text-sm leading-relaxed text-neutral-500">{f.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Image Grid ─── */}
+      <section className="bg-black text-white px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {NEW_IMAGE_CARDS.map((card, i) => (
+              <Reveal key={card.title} delay={i * 60}>
+                <div className="relative h-64 sm:h-72 rounded-2xl overflow-hidden group">
+                  <img src={card.img} alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-x-3 bottom-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 p-4 transition-all">
+                    <h3 className="text-white text-base font-serif mb-1 drop-shadow-sm">{card.title}</h3>
+                    <p className="text-white/80 text-[13px] tracking-wide leading-snug">{card.text}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -377,6 +389,21 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ─── Centered Banner (v2) ─── */}
+      <section className="px-6 py-20 sm:py-28 bg-white">
+        <Reveal>
+          <div className="mx-auto max-w-6xl relative h-[400px] sm:h-[500px] rounded-3xl overflow-hidden border border-neutral-200 shadow-xl flex items-center justify-center bg-black">
+            <video src="/v2.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-80" />
+            <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 sm:p-12 text-center max-w-lg w-[calc(100%-3rem)]">
+              <h2 className="text-3xl sm:text-4xl font-serif text-white mb-3 drop-shadow-sm">Find Your Community</h2>
+              <p className="text-sm sm:text-base text-white/90 leading-relaxed drop-shadow-sm font-medium">
+                Connect with students who share your interests. Create a group, plan an event, and make the most out of your campus life.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ─── How it works ─── */}
       <section id="how-it-works" className="px-6 py-20 sm:py-28">
         <div className="mx-auto max-w-3xl">
@@ -427,23 +454,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
-      <section className="px-6 py-24 sm:py-32">
+      {/* ─── CTA Banner (v3) ─── */}
+      <section className="px-6 py-20 sm:py-28 bg-white">
         <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Ready to find your crew?
-            </h2>
-            <p className="mx-auto mt-3 max-w-sm text-sm text-neutral-500">
-              Join hundreds of MIT Bengaluru students already using Unicircle.
-            </p>
-            <button
-              onClick={() => navigate("/login")}
-              className="group mt-8 inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
-            >
-              Get started — it's free
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-            </button>
+          <div className="mx-auto max-w-6xl relative h-[450px] sm:h-[550px] rounded-3xl overflow-hidden border border-neutral-200 shadow-xl flex items-center bg-black">
+            <video src="/v3.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-90" />
+            <div className="relative z-10 ml-6 sm:ml-16 bg-black/20 backdrop-blur-md border border-white/20 rounded-2xl p-8 sm:p-12 max-w-md w-[calc(100%-3rem)]">
+              <h2 className="text-3xl sm:text-5xl font-serif text-white mb-4 drop-shadow-sm">Ready to find your crew?</h2>
+              <p className="text-sm sm:text-base text-white/90 leading-relaxed mb-8 drop-shadow-sm font-medium">
+                Be the first to start a group, plan a weekend trip, or host a study session. Your campus community is waiting.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-transform hover:scale-105 shadow-md"
+                >
+                  Join Now
+                </button>
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=karanlalwani2086@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/30 inline-flex items-center justify-center"
+                >
+                  Contact us
+                </a>
+              </div>
+            </div>
           </div>
         </Reveal>
       </section>
