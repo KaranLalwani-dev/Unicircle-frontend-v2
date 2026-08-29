@@ -17,39 +17,43 @@ async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers,
+    });
 
-  if (response.status === 401) {
-    window.dispatchEvent(new Event("auth-unauthorized"));
-  }
+    if (response.status === 401) {
+      window.dispatchEvent(new Event("auth-unauthorized"));
+    }
 
-  // Handle No Content
-  if (response.status === 204 || response.status === 200) {
+    // Handle No Content
+    if (response.status === 204 || response.status === 200) {
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
-         return response.json() as Promise<T>;
+        return response.json() as Promise<T>;
       } else {
-         return {} as T; 
+        return {} as T;
       }
-  }
-
-  if (!response.ok) {
-    let message = `Request failed: ${response.statusText}`;
-    try {
-      const errorData = await response.json();
-      if (errorData.message) message = errorData.message;
-    } catch (e) {
-      // Use fallback message
     }
-    const err = new Error(message) as any;
-    err.status = response.status;
-    throw err;
-  }
 
-  return {} as T;
+    if (!response.ok) {
+      let message = `Request failed: ${response.statusText}`;
+      try {
+        const errorData = await response.json();
+        if (errorData.message) message = errorData.message;
+      } catch (e) {
+        // Use fallback message
+      }
+      const err = new Error(message) as any;
+      err.status = response.status;
+      throw err;
+    }
+
+    return {} as T;
+  } catch (error: any) {
+    throw error;
+  }
 }
 
 // ----------------------

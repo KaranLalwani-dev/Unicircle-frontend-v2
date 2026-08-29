@@ -10,6 +10,7 @@ import CreateGroupModal from "@/components/groups/CreateGroupModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 
 const BRANCHES = ["All", "CSE", "AI", "DS", "CYS", "IT", "ECE", "ME", "CE", "EE"];
@@ -180,12 +181,19 @@ export default function DiscoverPage() {
       )}
 
       {/* FAB */}
-      <button
-        onClick={() => setShowCreate(true)}
-        className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg transition-transform hover:scale-105 active:scale-95 md:bottom-6"
-      >
-        <Plus className="h-6 w-6 text-primary-foreground" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg transition-transform hover:scale-105 active:scale-95 md:bottom-6"
+          >
+            <Plus className="h-6 w-6 text-primary-foreground" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="left" sideOffset={10}>
+          <p>Create your crew</p>
+        </TooltipContent>
+      </Tooltip>
 
       {detailGroup && <GroupDetailsModal group={detailGroup as any} open={!!detailGroup} onClose={() => setDetailGroup(null)} onRequestJoin={handleRequestJoin} />}
       <CreateGroupModal open={showCreate} onClose={() => setShowCreate(false)} onCreated={() => queryClient.invalidateQueries({ queryKey: ["groups"] })} />

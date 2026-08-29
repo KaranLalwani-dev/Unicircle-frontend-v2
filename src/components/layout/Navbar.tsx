@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Compass, Activity, UserCircle, LogOut, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const navItems = [
   { to: "/discover", label: "Discover", icon: Compass },
@@ -47,9 +48,16 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <span className="hidden text-sm text-muted-foreground md:block">{user.name}</span>
-            <Button variant="ghost" size="sm" onClick={logout} className="text-muted-foreground hover:text-destructive">
-              <LogOut className="h-4 w-4" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="sm" onClick={logout} className="text-muted-foreground hover:text-destructive">
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Log Out</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
       </header>

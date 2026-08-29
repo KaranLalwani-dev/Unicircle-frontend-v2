@@ -44,28 +44,40 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    
-    const trimmedEmail = email.trim();
-    if (trimmedEmail) {
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-        setError("Please enter a valid email.");
-        return;
-      }
-      if (!/^[a-zA-Z0-9._%+-]+@learner\.manipal\.edu$/i.test(trimmedEmail)) {
-        setError("please login with your college email id");
-        return;
-      }
-    }
 
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedName = name.trim();
+    const trimmedInstagram = instagramId.trim();
+    const trimmedPhone = phoneNumber.trim();
+    
+    // 1. Basic empty check
     if (isLogin) {
-      if (!email.trim() || !password.trim()) {
+      if (!trimmedEmail || !trimmedPassword) {
         setError("Please enter both email and password.");
         return;
       }
     } else {
-      const trimmedName = name.trim();
-      if (!email.trim() || !password.trim() || !trimmedName || !year || !branch) {
+      if (!trimmedEmail || !trimmedPassword || !trimmedName || !year || !branch) {
         setError("Please fill out all required fields.");
+        return;
+      }
+    }
+
+    // 2. Email validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (!/^[a-zA-Z0-9._%+-]+@learner\.manipal\.edu$/i.test(trimmedEmail)) {
+      setError("Please login with your college email ID (@learner.manipal.edu).");
+      return;
+    }
+
+    // 3. Name & Phone validation (for signup)
+    if (!isLogin) {
+      if (trimmedName.length < 2) {
+        setError("Name must be at least 2 characters long.");
         return;
       }
       if (/^\d/.test(trimmedName)) {
@@ -76,35 +88,50 @@ export default function LoginPage() {
         setError("Name must contain at least one letter.");
         return;
       }
+      if (trimmedPhone && !/^\+?[0-9]{10,15}$/.test(trimmedPhone)) {
+        setError("Please enter a valid phone number.");
+        return;
+      }
     }
 
     setLoading(true);
     try {
       if (isLogin) {
-        await login({ username: email.trim(), password: password.trim() });
+        await login({ username: trimmedEmail, password: trimmedPassword });
+        navigate("/discover");
       } else {
         await signup({
-          username: email.trim(),
-          password: password.trim(),
-          name: name.trim(),
+          username: trimmedEmail,
+          password: trimmedPassword,
+          name: trimmedName,
           year,
           branch,
-          instagramId: instagramId.trim() || undefined,
-          phoneNumber: phoneNumber.trim() || undefined
+          instagramId: trimmedInstagram || undefined,
+          phoneNumber: trimmedPhone || undefined
         });
+        toast({ 
+          title: "Sign up successful!", 
+          description: "Please log in to your new account to continue." 
+        });
+        setIsLogin(true);
+        setPassword(""); // Clear password for security, let them re-enter to login
       }
-      navigate("/discover");
     } catch (err: any) {
+      console.error("Auth error:", err);
       if (err.status === 400) {
-        setError(err.message || "Invalid input data.");
+        setError(err.message || "Invalid input data. Please check your details.");
       } else if (err.status === 401) {
-        setError("The login information you entered is incorrect.");
+        setError("The email or password you entered is incorrect.");
+      } else if (err.status === 408) {
+        setError("The server took too long to respond. Please try again.");
+      } else if (err.status === 409) {
+        setError("An account with this email already exists.");
       } else {
         if (isLogin) {
           toast({ title: "Account not found", description: "Please create an account to join the community." });
           setIsLogin(false);
         } else {
-          toast({ title: "Error", description: "A network error occurred. Please try again." });
+          toast({ variant: "destructive", title: "Error", description: err.message || "A network error occurred. Please try again." });
         }
       }
     } finally {

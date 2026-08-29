@@ -179,7 +179,7 @@ export default function LandingPage() {
   return (
     <div className="landing-page min-h-screen bg-white text-neutral-900" style={{ backgroundImage: "none" }}>
       <AudioPlayer />
-      
+
       {/* ─── Nav ─── */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-200/80 bg-white/80 backdrop-blur-lg">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
@@ -339,11 +339,10 @@ export default function LandingPage() {
                   {/* Header row */}
                   <div className="flex items-start justify-between">
                     <p className="text-sm font-semibold text-neutral-900 leading-snug pr-3">{g.title}</p>
-                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-                      g.status === "Open"
+                    <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${g.status === "Open"
                         ? "bg-emerald-50 text-emerald-600"
                         : "bg-neutral-100 text-neutral-400"
-                    }`}>
+                      }`}>
                       {g.status}
                     </span>
                   </div>
