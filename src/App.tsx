@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import LoginPage from "@/pages/LoginPage";
 import LandingPage from "@/pages/LandingPage";
@@ -59,6 +60,7 @@ const App = () => (
           <AppRoutes />
         </BrowserRouter>
       </AuthProvider>
+      <Analytics />
     </TooltipProvider>
   </QueryClientProvider>
 );
