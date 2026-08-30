@@ -211,63 +211,76 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* ─── Hero ─── */}
-      <section className="relative px-6 pt-32 pb-20 sm:pt-40 sm:pb-28">
-        <div className="mx-auto max-w-3xl text-center">
-          <Reveal>
-            <p className="mb-4 text-sm font-medium text-neutral-400">For MIT Bengaluru students</p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h1 className="text-4xl font-semibold leading-[1.15] tracking-tight sm:text-6xl md:text-7xl">
-              Stop searching.
-              <br />
-              Start connecting.
-            </h1>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-neutral-500 sm:text-lg">
-              Unicircle helps you discover and join student groups for hackathons, treks,
-              cab shares, study sessions, and more — all in one place.
-            </p>
-          </Reveal>
-          <Reveal delay={180}>
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <button
-                onClick={() => navigate("/login")}
-                className="group inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
-              >
-                Create free account
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-              </button>
-              <a
-                href="#how-it-works"
-                className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-2.5 text-sm font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900"
-              >
-                Learn more
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ─── About Unicircle (v1) ─── */}
-      <section className="bg-black text-white px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-6xl grid gap-12 lg:grid-cols-2 lg:items-center">
-          <Reveal>
-            <div>
-              <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6 tracking-tight">About Unicircle</h2>
-              <p className="text-lg text-neutral-400 leading-relaxed">
-                Unicircle is a platform by students, for students. We invite you to discover, connect, and build memories with people who share your interests. Whether it's shipping code, trekking hills, or just hanging out, find your crew here.
+      {/* ─── Main Content Landmark ─── */}
+      <main>
+        {/* ─── Hero ─── */}
+        <section className="relative px-6 pt-32 pb-20 sm:pt-40 sm:pb-28">
+          <div className="mx-auto max-w-3xl text-center">
+            <Reveal>
+              <p className="mb-4 text-sm font-semibold text-neutral-600">For MIT Bengaluru students</p>
+            </Reveal>
+            <Reveal delay={60}>
+              <h1 className="text-4xl font-semibold leading-[1.15] tracking-tight sm:text-6xl md:text-7xl">
+                Stop searching.
+                <br />
+                Start connecting.
+              </h1>
+            </Reveal>
+            <Reveal delay={120}>
+              <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-neutral-600 sm:text-lg">
+                Unicircle helps you discover and join student groups for hackathons, treks,
+                cab shares, study sessions, and more — all in one place.
               </p>
-            </div>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-              <video src="/v1.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" />
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </Reveal>
+            <Reveal delay={180}>
+              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="group inline-flex items-center gap-2 rounded-lg bg-neutral-900 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+                >
+                  Create free account
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </button>
+                <a
+                  href="#how-it-works"
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-2.5 text-sm font-medium text-neutral-600 transition-colors hover:border-neutral-300 hover:text-neutral-900"
+                >
+                  Learn more
+                </a>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ─── About Unicircle (v1) ─── */}
+        <section className="bg-black text-white px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-6xl grid gap-12 lg:grid-cols-2 lg:items-center">
+            <Reveal>
+              <div>
+                <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl mb-6 tracking-tight">About Unicircle</h2>
+                <p className="text-lg text-neutral-400 leading-relaxed">
+                  Unicircle is a platform by students, for students. We invite you to discover, connect, and build memories with people who share your interests. Whether it's shipping code, trekking hills, or just hanging out, find your crew here.
+                </p>
+              </div>
+            </Reveal>
+            <Reveal delay={100}>
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                <video
+                  src="/v1.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label="About Unicircle presentation"
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <track kind="captions" />
+                </video>
+              </div>
+            </Reveal>
+          </div>
+        </section>
 
       {/* ─── Features ─── */}
       <section id="features" className="px-6 py-20 sm:py-28">
@@ -306,7 +319,15 @@ export default function LandingPage() {
             {NEW_IMAGE_CARDS.map((card, i) => (
               <Reveal key={card.title} delay={i * 60}>
                 <div className="relative h-64 sm:h-72 rounded-2xl overflow-hidden group">
-                  <img src={card.img} alt={card.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img
+                    src={card.img}
+                    alt={card.title}
+                    loading="lazy"
+                    decoding="async"
+                    width={800}
+                    height={448}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                   <div className="absolute inset-x-3 bottom-3 rounded-xl bg-black/40 backdrop-blur-md border border-white/10 p-4 transition-all">
                     <h3 className="text-white text-base font-serif mb-1 drop-shadow-sm">{card.title}</h3>
                     <p className="text-white/80 text-[13px] tracking-wide leading-snug">{card.text}</p>
@@ -392,7 +413,18 @@ export default function LandingPage() {
       <section className="px-6 py-20 sm:py-28 bg-white">
         <Reveal>
           <div className="mx-auto max-w-6xl relative h-[400px] sm:h-[500px] rounded-3xl overflow-hidden border border-neutral-200 shadow-xl flex items-center justify-center bg-black">
-            <video src="/v2.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-80" />
+            <video
+              src="/v2.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label="Community highlights"
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
+            >
+              <track kind="captions" />
+            </video>
             <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 sm:p-12 text-center max-w-lg w-[calc(100%-3rem)]">
               <h2 className="text-3xl sm:text-4xl font-serif text-white mb-3 drop-shadow-sm">Find Your Community</h2>
               <p className="text-sm sm:text-base text-white/90 leading-relaxed drop-shadow-sm font-medium">
@@ -408,7 +440,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-3xl">
           <Reveal>
             <div className="mb-14 text-center">
-              <p className="mb-2 text-sm font-medium text-neutral-400">Getting started</p>
+              <p className="mb-2 text-sm font-semibold text-neutral-600">Getting started</p>
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                 Up and running in minutes
               </h2>
@@ -437,7 +469,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-2xl">
           <Reveal>
             <div className="mb-10 text-center">
-              <p className="mb-2 text-sm font-medium text-neutral-400">Support</p>
+              <p className="mb-2 text-sm font-semibold text-neutral-600">Support</p>
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                 Frequently asked questions
               </h2>
@@ -457,7 +489,18 @@ export default function LandingPage() {
       <section className="px-6 py-20 sm:py-28 bg-white">
         <Reveal>
           <div className="mx-auto max-w-6xl relative h-[450px] sm:h-[550px] rounded-3xl overflow-hidden border border-neutral-200 shadow-xl flex items-center bg-black">
-            <video src="/v3.mp4" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-90" />
+            <video
+              src="/v3.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label="Find your crew background video"
+              className="absolute inset-0 w-full h-full object-cover opacity-90"
+            >
+              <track kind="captions" />
+            </video>
             <div className="relative z-10 ml-6 sm:ml-16 bg-black/20 backdrop-blur-md border border-white/20 rounded-2xl p-8 sm:p-12 max-w-md w-[calc(100%-3rem)]">
               <h2 className="text-3xl sm:text-5xl font-serif text-white mb-4 drop-shadow-sm">Ready to find your crew?</h2>
               <p className="text-sm sm:text-base text-white/90 leading-relaxed mb-8 drop-shadow-sm font-medium">
@@ -483,6 +526,7 @@ export default function LandingPage() {
           </div>
         </Reveal>
       </section>
+      </main>
 
       {/* ─── Footer ─── */}
       <footer className="border-t border-neutral-200 px-6 py-8">

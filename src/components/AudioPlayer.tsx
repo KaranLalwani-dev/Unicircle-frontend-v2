@@ -24,7 +24,7 @@ export default function AudioPlayer() {
         if (!hasManuallyPaused && audioRef.current && audioRef.current.paused) {
           audioRef.current.play().then(() => {
             setIsPlaying(true);
-          }).catch(e => {
+          }).catch(() => {
             // Browsers may block auto-play without prior user interaction
             console.log("Auto-play blocked by browser. Needs user interaction first.");
           });
@@ -34,8 +34,24 @@ export default function AudioPlayer() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleFirstInteraction = () => {
+      // Start playback on first click/tap/keypress if player is in visible zone and not manually paused
+      if (!hasManuallyPaused && audioRef.current && audioRef.current.paused && window.scrollY > 100) {
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {});
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("pointerdown", handleFirstInteraction, { once: true });
+    window.addEventListener("keydown", handleFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("pointerdown", handleFirstInteraction);
+      window.removeEventListener("keydown", handleFirstInteraction);
+    };
   }, [hasManuallyPaused]);
 
   const togglePlay = () => {
@@ -93,7 +109,7 @@ export default function AudioPlayer() {
 
   return (
     <>
-      <audio ref={audioRef} src={TRACKS[currentTrackIndex]} preload="metadata" />
+      <audio ref={audioRef} src={TRACKS[currentTrackIndex]} preload="none" />
       
       <div 
         className={`fixed bottom-4 sm:bottom-6 left-1/2 z-[100] w-[calc(100vw-1.5rem)] sm:w-[calc(100vw-2rem)] max-w-[860px] p-1.5 sm:p-2 md:p-2.5 px-3.5 sm:px-5 bg-zinc-900/80 border-2 border-zinc-800 rounded-full shadow-lg text-white flex items-center justify-between gap-2 sm:gap-3 select-none transition-all duration-500 backdrop-blur-md ${
