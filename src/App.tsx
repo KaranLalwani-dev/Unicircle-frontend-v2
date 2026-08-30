@@ -1,20 +1,14 @@
 import { lazy, Suspense } from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
-import Navbar from "@/components/layout/Navbar";
 import LandingPage from "@/pages/LandingPage";
 
-const LoginPage = lazy(() => import("@/pages/LoginPage"));
-const DiscoverPage = lazy(() => import("@/pages/DiscoverPage"));
-const MyActivityPage = lazy(() => import("@/pages/MyActivityPage"));
-const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-
-const queryClient = new QueryClient();
+/**
+ * AppShell is lazy-loaded so that heavy providers (react-query, radix
+ * tooltip/toast, sonner) and all authenticated-route code stay out of
+ * the landing-page critical bundle.
+ */
+const AppShell = lazy(() => import("@/components/AppShell"));
 
 function PageLoader() {
   return (
@@ -24,52 +18,34 @@ function PageLoader() {
   );
 }
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
-  return <>{children}</>;
-}
-
 function AppRoutes() {
   const { user, loading } = useAuth();
   const location = useLocation();
-  
+
   if (loading) {
     return <PageLoader />;
   }
 
-  const isLandingPage = location.pathname === "/" && !user;
+  // Fast path: unauthenticated landing page.
+  // No heavy providers needed — renders instantly from the initial bundle.
+  if (location.pathname === "/" && !user) {
+    return <LandingPage />;
+  }
 
+  // Full app: lazy-load providers + authenticated routes
   return (
-    <>
-      {!isLandingPage && <Navbar />}
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={user ? <Navigate to="/discover" replace /> : <LandingPage />} />
-          <Route path="/login" element={user ? <Navigate to="/discover" replace /> : <LoginPage />} />
-          <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
-          <Route path="/my-activity" element={<ProtectedRoute><MyActivityPage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </>
+    <Suspense fallback={<PageLoader />}>
+      <AppShell />
+    </Suspense>
   );
 }
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <AuthProvider>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  </AuthProvider>
 );
 
 export default App;
-
