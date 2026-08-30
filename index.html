@@ -11,6 +11,48 @@
     <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href="https://unicircle.in/" />
 
+    <!-- Inline Critical CSS: paint header + hero before external CSS loads -->
+    <style>
+      /* Font fallback with size-adjust to prevent CLS when Inter loads */
+      @font-face {
+        font-family: 'Inter Fallback';
+        src: local('Arial');
+        size-adjust: 107%;
+        ascent-override: 90%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+      }
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html{-webkit-text-size-adjust:100%}
+      body{font-family:'Inter','Inter Fallback',system-ui,-apple-system,sans-serif;
+           background:#eff6ff;color:#171717;-webkit-font-smoothing:antialiased}
+      /* Static shell styles */
+      .shell-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;
+                     justify-content:space-between;padding:.75rem 1.5rem;
+                     background:hsla(0,0%,100%,.8);backdrop-filter:blur(12px);
+                     border-bottom:1px solid hsl(0,0%,89.8%)}
+      .shell-logo{font-size:1.125rem;font-weight:600;letter-spacing:-.025em;color:#171717}
+      .shell-actions{display:flex;gap:.5rem}
+      .shell-btn{display:inline-flex;align-items:center;padding:.5rem 1rem;
+                  border-radius:.5rem;font-size:.875rem;font-weight:500;
+                  text-decoration:none;border:none;cursor:pointer}
+      .shell-btn-ghost{background:transparent;color:#171717}
+      .shell-btn-primary{background:#171717;color:#fafafa}
+      .shell-hero{display:flex;flex-direction:column;align-items:center;
+                   justify-content:center;text-align:center;padding:4rem 1.5rem 2rem;
+                   min-height:50vh}
+      .shell-hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;
+                      line-height:1.1;letter-spacing:-.025em;color:#171717;
+                      max-width:48rem;margin-bottom:1rem}
+      .shell-hero p{font-size:1.125rem;color:#737373;max-width:36rem}
+      .shell-spinner{display:flex;align-items:center;justify-content:center;
+                      padding:2rem}
+      .shell-spinner div{width:2rem;height:2rem;border:3px solid #e5e5e5;
+                          border-top-color:#171717;border-radius:50%;
+                          animation:spin .6s linear infinite}
+      @keyframes spin{to{transform:rotate(360deg)}}
+    </style>
+
     <!-- Google Fonts Preconnect & Async Stylesheet (Non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -67,7 +109,7 @@
       }
 
       if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadGTM, { timeout: 2500 });
+        requestIdleCallback(loadGTM, { timeout: 4000 });
       } else {
         window.addEventListener('load', loadGTM, { once: true });
       }
@@ -75,7 +117,22 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <!-- Static HTML shell: gives browser immediate content to paint before React boots -->
+    <!-- React will overwrite this on mount, eliminating LCP render delay -->
+    <div id="root">
+      <header class="shell-header">
+        <span class="shell-logo">Unicircle</span>
+        <div class="shell-actions">
+          <a class="shell-btn shell-btn-ghost" href="/login">Log in</a>
+          <a class="shell-btn shell-btn-primary" href="/login">Sign up</a>
+        </div>
+      </header>
+      <section class="shell-hero">
+        <h1>Find Your Crew at MIT Bengaluru</h1>
+        <p>Join groups for hackathons, treks, cab shares, study sessions, and more.</p>
+        <div class="shell-spinner"><div></div></div>
+      </section>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

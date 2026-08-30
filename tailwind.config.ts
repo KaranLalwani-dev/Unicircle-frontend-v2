@@ -109,6 +109,7 @@ export default {
   		fontFamily: {
   			sans: [
   				'Inter',
+  				'Inter Fallback',
   				'ui-sans-serif',
   				'system-ui',
   				'-apple-system',

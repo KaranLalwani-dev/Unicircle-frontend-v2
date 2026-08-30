@@ -6,9 +6,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Navbar from "@/components/layout/Navbar";
+import LandingPage from "@/pages/LandingPage";
 
 const LoginPage = lazy(() => import("@/pages/LoginPage"));
-const LandingPage = lazy(() => import("@/pages/LandingPage"));
 const DiscoverPage = lazy(() => import("@/pages/DiscoverPage"));
 const MyActivityPage = lazy(() => import("@/pages/MyActivityPage"));
 const ProfilePage = lazy(() => import("@/pages/ProfilePage"));
