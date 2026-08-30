@@ -36,7 +36,7 @@ describe("LoginPage Domain Validation", () => {
     fireEvent.change(passwordInput, { target: { value: "password123" } });
     fireEvent.click(submitButton);
 
-    expect(await screen.findByText("please login with your college email id")).toBeInTheDocument();
+    expect(await screen.findByText("Please login with your college email ID (@learner.manipal.edu).")).toBeInTheDocument();
     expect(mockLogin).not.toHaveBeenCalled();
   });
 
@@ -51,7 +51,7 @@ describe("LoginPage Domain Validation", () => {
     fireEvent.change(passwordInput, { target: { value: "password123" } });
     fireEvent.click(submitButton);
 
-    expect(await screen.findByText("Please enter a valid email.")).toBeInTheDocument();
+    expect(await screen.findByText(/Please enter a valid email/i)).toBeInTheDocument();
     expect(mockLogin).not.toHaveBeenCalled();
   });
 

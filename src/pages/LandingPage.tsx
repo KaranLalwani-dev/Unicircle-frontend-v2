@@ -149,12 +149,12 @@ const EXAMPLES = [
 ];
 
 const NEW_IMAGE_CARDS = [
-  { img: "/road trip.png", title: "Road Trips", text: "Enjoy that long weekend road trip out of the city with friends." },
-  { img: "/hackathon.png", title: "Hackathons", text: "Conquer the next campus hackathon together and build cool stuff." },
-  { img: "/treak.png", title: "Weekend Treks", text: "Reach new heights and catch the sunrise before morning classes." },
-  { img: "/football.png", title: "Campus Sports", text: "Score big, train hard, and play with your college squad." },
-  { img: "/cafe.jpg", title: "Cafes", text: "Grab a coffee and hang out with friends after class." },
-  { img: "/picnic.jpg", title: "Campus Hangs", text: "Relax and unwind under the sun on the campus lawns." },
+  { img: "/road trip.webp", title: "Road Trips", text: "Enjoy that long weekend road trip out of the city with friends." },
+  { img: "/hackathon.webp", title: "Hackathons", text: "Conquer the next campus hackathon together and build cool stuff." },
+  { img: "/treak.webp", title: "Weekend Treks", text: "Reach new heights and catch the sunrise before morning classes." },
+  { img: "/football.webp", title: "Campus Sports", text: "Score big, train hard, and play with your college squad." },
+  { img: "/cafe.webp", title: "Cafes", text: "Grab a coffee and hang out with friends after class." },
+  { img: "/picnic.webp", title: "Campus Hangs", text: "Relax and unwind under the sun on the campus lawns." },
 ];
 
 const STEPS = [
